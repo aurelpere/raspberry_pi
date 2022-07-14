@@ -3,6 +3,8 @@ diskutil list (macos)
 lsblk (linux)
 # install image sur sdcard ou usb
 sudo dd bs=1M if=chemin_vers_le_img_de_raspbian of=/dev/votre_carte status=progress conv=fsync
+or use Raspberry Pi Imager
+https://www.raspberrypi.com/software/
 # configure boot usb
 rendez vous dans la partition boot de la carte (la seule accessible depuis Windows, normalement) pour éditer le fichier config.txt et rajouter à la fin du fichier la ligne suivante :
 program_usb_boot_mode=1
