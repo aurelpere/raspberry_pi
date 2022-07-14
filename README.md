@@ -127,10 +127,8 @@ Plugin {
 add
 
 Button {
-
-    id=/usr/local/share/applications/toggle-matchbox-keyboard.desktop
-
-    }
+id=/usr/local/share/applications/toggle-matchbox-keyboard.desktop
+}
 
 
 sudo reboot
