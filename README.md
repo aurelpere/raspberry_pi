@@ -15,6 +15,16 @@ pour éditer le fichier config.txt et rajouter à la fin du fichier la ligne sui
 
 program_usb_boot_mode=1
 
+Verification : 
+
+vcgencmd otp_dump | grep 17
+
+17:3020000a  la réponse doit être cette valeur, sinon il est inutile de continuer
+
+On peut maintenant effacer ou commenter la ligne program_usb_boot_mode=1
+
+Vous pouvez éteindre le Raspberry Pi et enlever la carte micro SD.
+
 # configure 3.5 inch screen
 git clone https://github.com/Elecrow-keen/Elecrow-LCD35.git
 
