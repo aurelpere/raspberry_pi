@@ -26,29 +26,63 @@ On peut maintenant effacer ou commenter la ligne program_usb_boot_mode=1
 Vous pouvez éteindre le Raspberry Pi et enlever la carte micro SD.
 
 # configure 3.5 inch screen
-git clone https://github.com/Elecrow-keen/Elecrow-LCD35.git
+https://forums.raspberrypi.com/viewtopic.php?t=178443 
 
-cd Elecrow-LCD35
+First of all enable SPI by using the terminal command:
+raspi-config
+Navigate to 'Advanced options' and then enable both SPI and SSH.
 
-sudo ./Elecrow-LCD35
+Reboot if needed through the command in the terminal:
+sudo reboot
 
-calibration:
+The touch screen should turn on and be white colored.
 
-cd Elecrow-LCD35
+Give the following commands for Raspbian updating:
+sudo rpi-update
+sudo reboot
 
-sudo dpkg -i -B xinput-calibrator_0.7.5-1_armhf.deb
+Then after restart:
+sudo apt-get update
+sudo apt-get upgrade
+sudo reboot
 
-Click the Menu button on the taskbar, choose Preference -> Calibrate Touchscreen.
+sudo nano /boot/config.txt
+then add this line to the bottom
+dtoverlay=piscreen,speed=16000000,rotate=90
+give Ctrl+X then save and exit.
 
-Finish the touch calibration following the prompts. Maybe rebooting is required to make calibration 
+Give the command:
+sudo reboot
 
-active.
+sudo apt-get install fbi
+then
+sudo reboot
 
-You can create a 99-calibration.conf file to save the touch parameters (not necessary if file 
+After reboot give:
+sudo nano /usr/share/X11/xorg.conf.d/99-fbturbo.conf
+change the line in the file:
+Option "fbdev" "/dev/fb0"
+to
+Option "fbdev" "/dev/fb1"
+Give Ctrl+X, save, exit and reboot with sudo reboot.
 
-exists).
+To complete the installation create a script for touch axes:
+sudo nano /etc/xdg/lxsession/LXDE/touchscreen.sh
+then add these lines to the file:
+DISPLAY=:0 xinput --set-prop 'ADS7846 Touchscreen' 'Evdev Axes Swap' 0
+DISPLAY=:0 xinput --set-prop 'ADS7846 Touchscreen' 'Evdev Axis Inversion' 1 0
+give Ctrl+X, save and exit.
+Then make the file executable:
+sudo chmod +x /etc/xdg/lxsession/LXDE/touchscreen.sh
 
-/ect/X11/xorg.conf.d/99-calibration.conf
+Now let's run this script at startup:
+sudo nano /etc/xdg/lxsession/LXDE/autostart
+then before the line
+@xscreensaver -no-splash
+add
+@lxterminal --command "/etc/xdg/lxsession/LXDE/touchscreen.sh"
+give Ctrl+X, save, exit and reboot your RPi.
+(Before 'command' there are two --, not one -)
 
 # install soft keyboard
 
